@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('billings', function (Blueprint $table) {
             $table->id();
-            $table->string('project_code')->unique();
-            $table->string('project_name');
-            $table->string('client');
-            $table->decimal('budget', 15, 2)->default(0);
-            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('billings');
     }
 };
