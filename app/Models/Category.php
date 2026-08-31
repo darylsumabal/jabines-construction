@@ -4,6 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable]
-class Category extends Model {}
+#[Fillable(
+    'name',
+    'description',
+)]
+class Category extends Model
+{
+    public function inventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class);
+    }
+}

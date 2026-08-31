@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->string('category');
+            $table->decimal('unit_cost', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

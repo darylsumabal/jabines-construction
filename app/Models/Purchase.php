@@ -4,6 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable]
-class Purchase extends Model {}
+#[Fillable(
+    'ref_no',
+    'project_id',
+    'supplier_id',
+    'inventory_id',
+    'quantity',
+    'unit',
+    'unit_cost',
+    'total_amount',
+    'total',
+)]
+class Purchase extends Model
+{
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function inventory(): BelongsTo
+    {
+        return $this->belongsTo(Inventory::class);
+    }
+}
