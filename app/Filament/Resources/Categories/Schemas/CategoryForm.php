@@ -12,6 +12,10 @@ class CategoryForm
     {
         return $schema
             ->components([
+                TextInput::make('ref_code')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
