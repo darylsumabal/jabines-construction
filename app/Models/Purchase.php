@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'ref_no',
     'project_id',
     'supplier_id',
-    'inventory_id',
+    // 'inventory_id',
     'quantity',
     'unit',
     'unit_cost',
@@ -29,8 +29,13 @@ class Purchase extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function inventory(): BelongsTo
+    // public function inventory(): BelongsTo
+    // {
+    //     return $this->belongsTo(Inventory::class);
+    // }
+
+    public function material(): BelongsTo
     {
-        return $this->belongsTo(Inventory::class);
+        return $this->belongsTo(Material::class);
     }
 }

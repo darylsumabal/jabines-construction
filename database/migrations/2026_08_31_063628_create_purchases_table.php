@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Inventory;
+use App\Models\Material;
 use App\Models\Project;
 use App\Models\Supplier;
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +20,8 @@ return new class extends Migration
             $table->string('ref_no');
             $table->foreignIdFor(Project::class);
             $table->foreignIdFor(Supplier::class);
-            $table->foreignIdFor(Inventory::class);
+            // $table->foreignIdFor(Inventory::class);
+            $table->foreignIdFor(Material::class);
             $table->integer('quantity');
             $table->integer('unit');
             $table->decimal('unit_cost', 15, 2);

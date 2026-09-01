@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 #[Fillable(
     'ref_no',
-    'materials_id',
+    'material_id',
     'category_id',
     'beg_stock',
     'purchased_quantity',
@@ -22,7 +22,7 @@ class Inventory extends Model
 {
     public function material(): BelongsTo
     {
-        return $this->belongsTo(Material::class, 'materials_id');
+        return $this->belongsTo(Material::class);
     }
 
     public function category(): BelongsTo
@@ -30,8 +30,8 @@ class Inventory extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function purchases(): HasMany
-    {
-        return $this->hasMany(Purchase::class);
-    }
+    // public function purchases(): HasMany
+    // {
+    //     return $this->hasMany(Purchase::class);
+    // }
 }

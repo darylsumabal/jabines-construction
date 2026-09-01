@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('ref_no');
             $table->foreignIdFor(Material::class);
-            $table->foreignId(Category::class);
+            $table->foreignIdFor(Category::class);
             $table->integer('beg_stock');
             $table->integer('purchased_quantity');
             $table->integer('used_quantity');
