@@ -23,8 +23,8 @@ return new class extends Migration
             // $table->foreignIdFor(Inventory::class);
             $table->foreignIdFor(Material::class);
             $table->integer('quantity');
-            $table->integer('unit');
-            $table->decimal('unit_cost', 15, 2);
+            // $table->integer('unit');
+            // $table->decimal('unit_cost', 15, 2);
             $table->decimal('total_amount', 15, 2);
             $table->decimal('total', 15, 2);
             $table->timestamps();

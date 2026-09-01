@@ -8,6 +8,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use PtPlugins\FilamentNumberInput\Fields\NumberInput;
 
 class PurchaseForm
 {
@@ -18,21 +19,19 @@ class PurchaseForm
                 TextInput::make('ref_no')
                     ->required()
                     ->maxLength(255),
+
                 Select::make('project_id')
                     ->relationship('project', 'project_code')
                     ->required()
                     ->searchable()
                     ->preload(),
+
                 Select::make('supplier_id')
                     ->relationship('supplier', 'name')
                     ->required()
                     ->searchable()
                     ->preload(),
-                // Select::make('inventory_id')
-                //     ->relationship('inventory', 'ref_no')
-                //     ->required()
-                //     ->searchable()
-                //     ->preload(),
+
                 Select::make('material_id')
                     ->label('Material Code')
                     ->relationship('material', 'ref_code')
@@ -45,20 +44,26 @@ class PurchaseForm
                     ->afterStateUpdated(function ($state, Set $set, Get $get) {
                         if ($state) {
                             $material = Material::find($state);
-                            $unitCost = $material?->unit_cost ?? 0;
-                            $quantity = (float) ($get('quantity_used') ?? 0);
+                            $unitCost = (float) ($material?->unit_cost ?? 0);
+                            $quantity = (float) ($get('quantity') ?? 0);
+
+                            // 1. Calculate total_amount (quantity * unitCost)
+                            $totalAmount = $quantity * $unitCost;
+
+                            // 2. Calculate total (total_amount * unit_cost)
+                            $total = $totalAmount * $unitCost;
 
                             $set('material_name', $material?->name);
-                            $set('material_unit', $material?->unit);
-                            $set('material_unit_cost', $unitCost);
-
-                            // // Calculate total cost
-                            // $set('total_cost', number_format($unitCost * $quantity, 2, '.', ''));
+                            $set('unit', $material?->unit);
+                            $set('unit_cost', $unitCost);
+                            $set('total_amount', $totalAmount);
+                            $set('total', $total);
                         } else {
                             $set('material_name', null);
-                            $set('material_unit', null);
-                            $set('material_unit_cost', null);
-                            $set('total_cost', null);
+                            $set('unit', null);
+                            $set('unit_cost', null);
+                            $set('total_amount', null);
+                            $set('total', null);
                         }
                     }),
 
@@ -67,36 +72,43 @@ class PurchaseForm
                     ->readOnly()
                     ->dehydrated(false),
 
-                TextInput::make('material_unit')
+                TextInput::make('unit')
                     ->label('Material Unit')
-                    ->readOnly()
-                    ->dehydrated(false),
+                    ->dehydrated(false)
+                    ->readOnly(),
 
-                TextInput::make('material_unit_cost')
+                NumberInput::make('unit_cost')
                     ->label('Material Unit Cost')
-                    ->numeric()
+                    ->dehydrated(false)
                     ->readOnly()
-                    ->dehydrated(false),
+                    ->prefix('₱')->american(),
+
                 TextInput::make('quantity')
                     ->required()
                     ->numeric()
-                    ->default(0),
-                TextInput::make('unit')
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $unitCost = (float) ($get('unit_cost') ?? 0);
+                        $quantity = (float) ($state ?? 0);
+
+                        // 1. Calculate total_amount
+                        $totalAmount = $quantity * $unitCost;
+
+                        // 2. Calculate total as (total_amount * unit_cost)
+                        $total = $totalAmount * $unitCost;
+
+                        $set('total_amount', $totalAmount);
+                        $set('total', $total);
+                    }),
+
+                NumberInput::make('total_amount')
+                    ->readOnly()
+                    ->prefix('₱')->american(),
+
+                NumberInput::make('total')
                     ->required()
-                    ->numeric()
-                    ->default(0),
-                TextInput::make('unit_cost')
-                    ->required()
-                    ->numeric()
-                    ->prefix('₱'),
-                TextInput::make('total_amount')
-                    ->required()
-                    ->numeric()
-                    ->prefix('₱'),
-                TextInput::make('total')
-                    ->required()
-                    ->numeric()
-                    ->prefix('₱'),
+                    ->readOnly()
+                    ->prefix('₱')->american(),
             ]);
     }
 }

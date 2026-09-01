@@ -10,10 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'ref_no',
     'project_id',
     'supplier_id',
-    // 'inventory_id',
+    'material_id',
     'quantity',
-    'unit',
-    'unit_cost',
     'total_amount',
     'total',
 )]
