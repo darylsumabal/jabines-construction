@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Material\Tables;
+namespace App\Filament\Resources\Materials\Tables;
 
 use App\Filament\Imports\MaterialImporter;
 use Filament\Actions\BulkActionGroup;
@@ -46,7 +46,7 @@ class MaterialsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

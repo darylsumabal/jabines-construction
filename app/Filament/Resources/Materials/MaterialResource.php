@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Material;
+namespace App\Filament\Resources\Materials;
 
-use App\Filament\Resources\Material\Pages\CreateMaterial;
-use App\Filament\Resources\Material\Pages\EditMaterial;
-use App\Filament\Resources\Material\Pages\ListMaterials;
-use App\Filament\Resources\Material\Schemas\MaterialForm;
-use App\Filament\Resources\Material\Tables\MaterialsTable;
+use App\Filament\Resources\Materials\Pages\CreateMaterial;
+use App\Filament\Resources\Materials\Pages\EditMaterial;
+use App\Filament\Resources\Materials\Pages\ListMaterials;
+use App\Filament\Resources\Materials\Schemas\MaterialForm;
+use App\Filament\Resources\Materials\Tables\MaterialsTable;
 use App\Models\Material;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -20,7 +20,9 @@ use UnitEnum;
 class MaterialResource extends Resource
 {
     protected static ?string $model = Material::class;
-    protected static string | UnitEnum | null $navigationGroup = 'Inventory';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
     public static function form(Schema $schema): Schema

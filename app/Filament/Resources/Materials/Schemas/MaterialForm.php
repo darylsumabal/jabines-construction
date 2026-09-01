@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Material\Schemas;
+namespace App\Filament\Resources\Materials\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -12,7 +12,7 @@ class MaterialForm
     {
         return $schema
             ->components([
-                TextInput::make('code')
+                TextInput::make('ref_code')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('name')
