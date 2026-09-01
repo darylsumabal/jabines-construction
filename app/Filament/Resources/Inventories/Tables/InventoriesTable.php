@@ -19,39 +19,28 @@ class InventoriesTable
                     ->sortable(),
                 TextColumn::make('material.name')
                     ->label('Material')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('category.name')
                     ->label('Category')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('beg_stock')
-                    ->label('Beg Stock')
-                    ->sortable(),
+                    ->label('Beg Stock'),
                 TextColumn::make('purchased_quantity')
-                    ->label('Purchased')
-                    ->sortable(),
+                    ->label('Purchased'),
                 TextColumn::make('used_quantity')
-                    ->label('Used')
-                    ->sortable(),
+                    ->label('Used'),
                 TextColumn::make('ending_stock')
-                    ->label('Ending')
-                    ->sortable(),
+                    ->label('Ending'),
                 TextColumn::make('inventory_value')
                     ->label('Value')
-                    ->money('PHP')
-                    ->sortable(),
+                    ->money('PHP'),
                 TextColumn::make('stock_status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'in_stock' => 'success',
                         'low_stock' => 'warning',
                         'out_of_stock' => 'danger',
                     }),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
             ->recordActions([

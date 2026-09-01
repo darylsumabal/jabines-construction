@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(
-    'code',
+    'ref_code',
+    'date_used',
     'project_id',
-    'materials_id',
+    'material_id',
     'total_cost',
+    'quantity_used',
     'remarks',
 )]
 class MaterialUsage extends Model
@@ -22,6 +24,6 @@ class MaterialUsage extends Model
 
     public function material(): BelongsTo
     {
-        return $this->belongsTo(Materials::class, 'materials_id');
+        return $this->belongsTo(Material::class);
     }
 }

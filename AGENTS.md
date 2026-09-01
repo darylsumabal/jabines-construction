@@ -115,18 +115,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 ### Model Creation
 
 - When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `php artisan make:model --help` to check the available options.
-- Use Laravel 13 `#[Fillable]` attribute instead of `$fillable` property:
-  ```php
-  use Illuminate\Database\Eloquent\Attributes\Fillable;
-
-  #[Fillable('name', 'email')]
-  class User extends Model {}
-  ```
-- Use `#[Fillable]` without arguments to mark all columns as fillable:
-  ```php
-  #[Fillable]
-  class User extends Model {}
-  ```
 
 ## APIs & Eloquent Resources
 
@@ -160,82 +148,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - If you have modified any PHP files, you must run `vendor/bin/pint --dirty --format agent` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test --format agent`, simply run `vendor/bin/pint --format agent` to fix any formatting issues.
-
-=== filament/v5 rules ===
-
-# Filament v5
-
-## Resource Structure
-
-- Filament v5 uses `Filament\Schemas\Schema` for forms (not `Filament\Forms\Form`).
-- Filament v5 uses `Filament\Tables\Table` for tables.
-- Forms are defined in separate schema classes under `Schemas/` directory (e.g., `ProjectForm.php`).
-- Tables are defined in separate table classes under `Tables/` directory (e.g., `ProjectsTable.php`).
-
-## Form Components
-
-```php
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-use Filament\Schemas\Schema;
-
-TextInput::make('field_name')
-    ->required()
-    ->maxLength(255);
-
-Select::make('status')
-    ->options([
-        'option1' => 'Label 1',
-        'option2' => 'Label 2',
-    ])
-    ->default('option1');
-```
-
-## Table Columns
-
-```php
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
-
-TextColumn::make('field')
-    ->searchable()
-    ->sortable();
-
-TextColumn::make('status')
-    ->badge()
-    ->color(fn (string $state): string => match ($state) {
-        'active' => 'success',
-        'inactive' => 'danger',
-    });
-
-TextColumn::make('amount')
-    ->money('PHP');
-```
-
-## Table Filters
-
-```php
-use Filament\Tables\Filters\SelectFilter;
-
-SelectFilter::make('status')
-    ->options([...]);
-```
-
-## Table Actions
-
-```php
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-
-$table->recordActions([
-    EditAction::make(),
-])->toolbarActions([
-    BulkActionGroup::make([
-        DeleteBulkAction::make(),
-    ]),
-]);
-```
 
 === pest/core rules ===
 

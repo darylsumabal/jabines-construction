@@ -19,26 +19,16 @@ class PurchasesTable
                     ->sortable(),
                 TextColumn::make('project.project_name')
                     ->label('Project')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('supplier.name')
                     ->label('Supplier')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('quantity')
-                    ->sortable(),
-                TextColumn::make('unit')
-                    ->sortable(),
-                TextColumn::make('unit_cost')
-                    ->money('PHP')
-                    ->sortable(),
+                    ->searchable(),
+                TextColumn::make('quantity'),
+                TextColumn::make('material.unit'),
+                TextColumn::make('material.unit_cost')
+                    ->money('PHP'),
                 TextColumn::make('total')
-                    ->money('PHP')
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->money('PHP'),
             ])
             ->filters([])
             ->recordActions([

@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Category;
-use App\Models\Materials;
+use App\Models\Material;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->string('ref_no');
-            $table->foreignIdFor(Materials::class);
-            $table->foreignId(Category::class);
+            $table->foreignIdFor(Material::class);
+            $table->foreignIdFor(Category::class);
             $table->integer('beg_stock');
             $table->integer('purchased_quantity');
             $table->integer('used_quantity');
