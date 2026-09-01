@@ -7,6 +7,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
 class EditProject extends EditRecord
 {
@@ -15,9 +16,9 @@ class EditProject extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
+            // DeleteAction::make(),
+            // ForceDeleteAction::make(),
+            // RestoreAction::make(),
         ];
     }
 }

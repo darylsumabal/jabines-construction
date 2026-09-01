@@ -20,12 +20,12 @@ class Material extends Model
 
     public function materialUsages(): HasMany
     {
-        return $this->hasMany(MaterialUsage::class, 'materials_id');
+        return $this->hasMany(MaterialUsage::class);
     }
 
     public function inventories(): HasMany
     {
-        return $this->hasMany(Inventory::class, 'materials_id');
+        return $this->hasMany(Inventory::class);
     }
 
     public function category()

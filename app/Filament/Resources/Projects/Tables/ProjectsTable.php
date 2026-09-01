@@ -53,7 +53,7 @@ class ProjectsTable
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
+                // EditAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

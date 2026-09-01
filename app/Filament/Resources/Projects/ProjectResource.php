@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Projects;
 use App\Filament\Resources\Projects\Pages\CreateProject;
 use App\Filament\Resources\Projects\Pages\EditProject;
 use App\Filament\Resources\Projects\Pages\ListProjects;
+use App\Filament\Resources\Projects\Pages\ViewProject;
 use App\Filament\Resources\Projects\RelationManagers\AccountsReceivablesRelationManager;
 use App\Filament\Resources\Projects\RelationManagers\BillingRelationManager;
 use App\Filament\Resources\Projects\RelationManagers\CashReceiptsRelationManager;
@@ -54,6 +55,7 @@ class ProjectResource extends Resource
             'index' => ListProjects::route('/'),
             'create' => CreateProject::route('/create'),
             'edit' => EditProject::route('/{record}/edit'),
+            // 'view' => ViewProject::route('/{record}/view'),
         ];
     }
 

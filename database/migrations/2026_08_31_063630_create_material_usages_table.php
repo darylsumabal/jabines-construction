@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('material_usages', function (Blueprint $table) {
             $table->id();
             $table->string('ref_code');
+            $table->date('date_used');
             $table->foreignIdFor(Project::class);
             $table->foreignIdFor(Material::class);
+            $table->integer('quantity_used');
             $table->decimal('total_cost', 15, 2);
             $table->string('remarks');
             $table->timestamps();

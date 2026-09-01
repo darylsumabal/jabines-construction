@@ -2,13 +2,10 @@
 
 namespace App\Filament\Resources\Inventories\Schemas;
 
-
 use App\Models\Material;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Filament\Schemas\Components\Utilities\Set as UtilitiesSet;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class InventoryForm
@@ -27,7 +24,7 @@ class InventoryForm
                     ->preload()
                     ->optionsLimit(1000)
                     ->live()
-                    ->afterStateUpdated(function ($state, UtilitiesSet $set) {
+                    ->afterStateUpdated(function ($state, Set $set) {
                         logger($state);
                         if ($state) {
                             $material = Material::find($state);
