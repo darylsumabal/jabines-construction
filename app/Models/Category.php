@@ -20,6 +20,6 @@ class Category extends Model
 
     public function materials(): HasMany
     {
-        return $this->hasMany(Materials::class);
+        return $this->hasMany(Material::class);
     }
 }

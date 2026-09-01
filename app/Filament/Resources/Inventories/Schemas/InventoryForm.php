@@ -2,8 +2,13 @@
 
 namespace App\Filament\Resources\Inventories\Schemas;
 
+
+use App\Models\Material;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Schemas\Components\Utilities\Set as UtilitiesSet;
 use Filament\Schemas\Schema;
 
 class InventoryForm
@@ -16,10 +21,25 @@ class InventoryForm
                     ->required()
                     ->maxLength(255),
                 Select::make('materials_id')
-                    ->relationship('material', 'name')
+                    ->relationship('material', 'ref_code')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->optionsLimit(1000)
+                    ->live()
+                    ->afterStateUpdated(function ($state, UtilitiesSet $set) {
+                        logger($state);
+                        if ($state) {
+                            $material = Material::find($state);
+                            $set('material_name', $material?->name);
+                        } else {
+                            $set('material_name', null);
+                        }
+                    }),
+                TextInput::make('material_name')
+                    ->label('Material Name')
+                    ->readOnly()
+                    ->dehydrated(false),
                 Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required()

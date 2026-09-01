@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'unit',
     'unit_cost',
 )]
-class Materials extends Model
+class Material extends Model
 {
     use SoftDeletes;
 

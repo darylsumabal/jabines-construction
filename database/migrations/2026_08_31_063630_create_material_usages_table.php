@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Materials;
+use App\Models\Material;
 use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('ref_code');
             $table->foreignIdFor(Project::class);
-            $table->foreignIdFor(Materials::class);
+            $table->foreignIdFor(Material::class);
             $table->decimal('total_cost', 15, 2);
             $table->string('remarks');
             $table->timestamps();

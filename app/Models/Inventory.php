@@ -22,7 +22,7 @@ class Inventory extends Model
 {
     public function material(): BelongsTo
     {
-        return $this->belongsTo(Materials::class, 'materials_id');
+        return $this->belongsTo(Material::class, 'materials_id');
     }
 
     public function category(): BelongsTo

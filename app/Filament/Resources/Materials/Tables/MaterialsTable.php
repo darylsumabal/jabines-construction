@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Materials\Tables;
+namespace App\Filament\Resources\Material\Tables;
 
 use App\Filament\Imports\MaterialImporter;
 use Filament\Actions\BulkActionGroup;

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Materials;
+namespace App\Filament\Resources\Material;
 
-use App\Filament\Resources\Materials\Pages\CreateMaterial;
-use App\Filament\Resources\Materials\Pages\EditMaterial;
-use App\Filament\Resources\Materials\Pages\ListMaterials;
-use App\Filament\Resources\Materials\Schemas\MaterialForm;
-use App\Filament\Resources\Materials\Tables\MaterialsTable;
-use App\Models\Materials;
+use App\Filament\Resources\Material\Pages\CreateMaterial;
+use App\Filament\Resources\Material\Pages\EditMaterial;
+use App\Filament\Resources\Material\Pages\ListMaterials;
+use App\Filament\Resources\Material\Schemas\MaterialForm;
+use App\Filament\Resources\Material\Tables\MaterialsTable;
+use App\Models\Material;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -19,7 +19,7 @@ use UnitEnum;
 
 class MaterialResource extends Resource
 {
-    protected static ?string $model = Materials::class;
+    protected static ?string $model = Material::class;
     protected static string | UnitEnum | null $navigationGroup = 'Inventory';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
