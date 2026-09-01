@@ -18,7 +18,7 @@ class MaterialForm
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Select::make('category')
+                Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required(),
                 TextInput::make('unit')
