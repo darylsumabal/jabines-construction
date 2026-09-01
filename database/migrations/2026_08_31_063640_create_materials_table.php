@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('ref_code');
             $table->string('name');
-            $table->string('category');
+            $table->foreignIdFor(Category::class);
+            $table->string('unit');
             $table->decimal('unit_cost', 15, 2);
             $table->softDeletes();
             $table->timestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Materials\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -17,7 +18,10 @@ class MaterialForm
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('category')
+                Select::make('category')
+                    ->relationship('category', 'name')
+                    ->required(),
+                TextInput::make('unit')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('unit_cost')

@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Materials;
-use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('material_usages', function (Blueprint $table) {
+        Schema::create('failed_import_rows', function (Blueprint $table): void {
             $table->id();
-            $table->string('ref_code');
-            $table->foreignIdFor(Project::class);
-            $table->foreignIdFor(Materials::class);
-            $table->decimal('total_cost', 15, 2);
-            $table->string('remarks');
+            $table->json('data');
+            $table->foreignId('import_id')->constrained()->cascadeOnDelete();
+            $table->text('validation_error')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('material_usages');
+        Schema::dropIfExists('failed_import_rows');
     }
 };

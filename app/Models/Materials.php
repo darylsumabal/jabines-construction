@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(
-    'code',
+    'ref_code',
     'name',
-    'category',
+    'category_id',
+    'unit',
     'unit_cost',
 )]
 class Materials extends Model
@@ -25,5 +26,10 @@ class Materials extends Model
     public function inventories(): HasMany
     {
         return $this->hasMany(Inventory::class, 'materials_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }
