@@ -2,6 +2,8 @@
 
 use App\Models\Category;
 use App\Models\Material;
+use App\Models\Project;
+use App\Models\Purchase;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +20,8 @@ return new class extends Migration
             $table->string('ref_no');
             $table->foreignIdFor(Material::class);
             $table->foreignIdFor(Category::class);
+            $table->foreignIdFor(Purchase::class);
+            $table->foreignIdFor(Project::class);
             $table->integer('beg_stock');
             $table->integer('purchased_quantity');
             $table->integer('used_quantity');

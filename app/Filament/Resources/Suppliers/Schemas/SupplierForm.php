@@ -15,6 +15,12 @@ class SupplierForm
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                TextInput::make('contact_person')
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->email()
+                    ->unique(ignoreRecord: true)
+                    ->nullable(),
                 TextInput::make('address')
                     ->maxLength(255),
                 TextInput::make('phone')

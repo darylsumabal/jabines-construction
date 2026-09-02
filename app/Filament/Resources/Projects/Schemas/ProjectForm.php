@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Projects\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use PtPlugins\FilamentNumberInput\Fields\NumberInput;
 
 class ProjectForm
 {
@@ -21,9 +22,9 @@ class ProjectForm
                 TextInput::make('client')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('budget')
+                NumberInput::make('budget')
                     ->required()
-                    ->numeric()
+                    ->american()
                     ->prefix('₱'),
                 Select::make('status')
                     ->options([

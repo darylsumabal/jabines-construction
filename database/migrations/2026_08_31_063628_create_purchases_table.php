@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Material;
 use App\Models\Project;
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Supplier::class);
             // $table->foreignIdFor(Inventory::class);
             $table->foreignIdFor(Material::class);
+            $table->foreignIdFor(Category::class);
             $table->integer('quantity');
             // $table->integer('unit');
             // $table->decimal('unit_cost', 15, 2);

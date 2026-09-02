@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Projects\RelationManagers;
 
+use App\Models\Inventory;
 use App\Models\Material;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -35,9 +36,9 @@ class MaterialUsagesRelationManager extends RelationManager
                     ->required(),
                 Hidden::make('project_id')
                     ->default(fn() => $this->getOwnerRecord()->id),
-                Select::make('material_id')
-                    ->relationship('material', 'ref_code')
-                    ->getOptionLabelFromRecordUsing(fn(Material $record) => "{$record->ref_code} {$record->name}")
+                Select::make('inventory_id')
+                    ->relationship('inventory', 'ref_code')
+                    ->getOptionLabelFromRecordUsing(fn(Inventory $record) => "{$record->material->ref_code} {$record->material->name} ")
                     ->required()
                     ->searchable(['ref_code', 'name'])
                     ->preload()
@@ -45,12 +46,12 @@ class MaterialUsagesRelationManager extends RelationManager
                     ->live()
                     ->afterStateUpdated(function ($state, Set $set, Get $get) {
                         if ($state) {
-                            $material = Material::find($state);
-                            $unitCost = $material?->unit_cost ?? 0;
+                            $inventory = Inventory::find($state);
+                            $unitCost = $inventory->material?->unit_cost ?? 0;
                             $quantity = (float) ($get('quantity_used') ?? 0);
 
-                            $set('material_name', $material?->name);
-                            $set('material_unit', $material?->unit);
+                            $set('material_name', $inventory?->material?->name);
+                            $set('material_unit', $inventory?->material?->unit);
                             $set('material_unit_cost', $unitCost);
 
                             // Calculate total cost
@@ -73,11 +74,13 @@ class MaterialUsagesRelationManager extends RelationManager
                     ->readOnly()
                     ->dehydrated(false),
 
-                TextInput::make('material_unit_cost')
+                NumberInput::make('material_unit_cost')
                     ->label('Material Unit Cost')
                     ->numeric()
                     ->readOnly()
-                    ->dehydrated(false),
+                    ->dehydrated(false)
+                    ->american()
+                    ->prefix('₱'),
 
                 TextInput::make('quantity_used')
                     ->required()

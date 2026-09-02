@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'ref_no',
     'material_id',
     'category_id',
+    'project_id',
+    'purchase_id',
     'beg_stock',
     'purchased_quantity',
     'used_quantity',
@@ -28,6 +30,16 @@ class Inventory extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function materialUsage(): BelongsTo
+    {
+        return $this->belongsTo(MaterialUsage::class);
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
     }
 
     // public function purchases(): HasMany

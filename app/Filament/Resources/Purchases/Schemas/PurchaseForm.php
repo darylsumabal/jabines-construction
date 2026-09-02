@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Purchases\Schemas;
 
+use App\Models\Category;
 use App\Models\Material;
+use App\Models\Project;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;
@@ -21,10 +23,14 @@ class PurchaseForm
                     ->maxLength(255),
 
                 Select::make('project_id')
-                    ->relationship('project', 'project_code')
+                    ->relationship('project', 'project_name')
+                    ->getOptionLabelFromRecordUsing(
+                        fn(Project $record) => "{$record->project_code} {$record->client}  {$record->project_name}"
+                    )
                     ->required()
                     ->searchable()
                     ->preload(),
+
 
                 Select::make('supplier_id')
                     ->relationship('supplier', 'name')
@@ -32,10 +38,39 @@ class PurchaseForm
                     ->searchable()
                     ->preload(),
 
+                Select::make('category_id')
+                    ->label('Category')
+                    ->relationship('category', 'name')
+                    ->required()
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(function (Set $set) {
+                        $set('material_id', null);
+                        $set('material_name', null);
+                        $set('unit', null);
+                        $set('unit_cost', null);
+                        $set('total_amount', null);
+                        $set('total', null);
+                    })
+                    ->preload(),
+
                 Select::make('material_id')
                     ->label('Material Code')
+                    ->disabled(fn(Get $get) => ! $get('category_id'))
                     ->relationship('material', 'ref_code')
-                    ->getOptionLabelFromRecordUsing(fn(Material $record) => "{$record->ref_code} {$record->name}")
+                    ->options(function (Get $get) {
+                        $categoryId = $get('category_id');
+
+                        if (! $categoryId) {
+                            return [];
+                        }
+
+                        return Material::where('category_id', $categoryId)
+                            ->get()
+                            ->mapWithKeys(fn(Material $material) => [
+                                $material->id => "{$material->ref_code} {$material->name}",
+                            ]);
+                    })
                     ->required()
                     ->searchable(['ref_code', 'name'])
                     ->preload()

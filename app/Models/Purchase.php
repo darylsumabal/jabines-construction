@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'project_id',
     'supplier_id',
     'material_id',
+    'category_id',
     'quantity',
     'total_amount',
     'total',
@@ -35,5 +36,10 @@ class Purchase extends Model
     public function material(): BelongsTo
     {
         return $this->belongsTo(Material::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }
