@@ -18,6 +18,12 @@ class InventoriesTable
                 TextColumn::make('ref_no')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('project.project_name')
+                    ->label('Project')
+                    ->formatStateUsing(
+                        fn ($state, $record) => "{$record->project->client} - {$state}"
+                    )
+                    ->searchable(),
                 TextColumn::make('material.name')
                     ->label('Material')
                     ->searchable(),
@@ -37,7 +43,7 @@ class InventoriesTable
                     ->money('PHP'),
                 TextColumn::make('stock_status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'in_stock' => 'success',
                         'low_stock' => 'warning',
                         'out_of_stock' => 'danger',

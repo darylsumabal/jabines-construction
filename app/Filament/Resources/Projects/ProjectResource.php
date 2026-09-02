@@ -33,6 +33,16 @@ class ProjectResource extends Resource
         return ProjectForm::configure($schema);
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
+    }
+
     public static function table(Table $table): Table
     {
         return ProjectsTable::configure($table);
@@ -45,7 +55,7 @@ class ProjectResource extends Resource
             RevenueRelationManager::class,
             AccountsReceivablesRelationManager::class,
             CashReceiptsRelationManager::class,
-            MaterialUsagesRelationManager::class
+            MaterialUsagesRelationManager::class,
         ];
     }
 

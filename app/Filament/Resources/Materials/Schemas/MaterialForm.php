@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources\Materials\Schemas;
 
+use App\Models\Material;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class MaterialForm
@@ -14,6 +17,21 @@ class MaterialForm
             ->components([
                 TextInput::make('ref_code')
                     ->required()
+                    ->suffixAction(
+                        Action::make('generateRefCode')
+                            ->icon('heroicon-m-arrow-path')
+                            ->action(function (Set $set) {
+                                $lastCategory = Material::orderBy('id', 'desc')->first();
+
+                                if ($lastCategory && preg_match('/^MAT-(\d+)$/', $lastCategory->ref_code, $matches)) {
+                                    $nextNumber = intval($matches[1]) + 1;
+                                } else {
+                                    $nextNumber = 1;
+                                }
+
+                                $set('ref_code', 'MAT-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                            })
+                    )
                     ->maxLength(255),
                 TextInput::make('name')
                     ->required()

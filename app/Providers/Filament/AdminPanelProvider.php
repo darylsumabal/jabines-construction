@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Default,
             ])
+            ->databaseNotifications()
             ->maxContentWidth(Width::Full)
             ->topbar(false)
             ->spa(hasPrefetching: true)

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(
     'ref_no',
@@ -46,4 +46,8 @@ class Inventory extends Model
     // {
     //     return $this->hasMany(Purchase::class);
     // }
+    public function inventoryHistory(): HasMany
+    {
+        return $this->hasMany(InventoryHistory::class);
+    }
 }

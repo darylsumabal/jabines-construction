@@ -18,8 +18,20 @@ use UnitEnum;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-    protected static string | UnitEnum | null $navigationGroup = 'Inventory';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -42,7 +54,7 @@ class CategoryResource extends Resource
     {
         return [
             'index' => ListCategories::route('/'),
-            'create' => CreateCategory::route('/create'),
+            // 'create' => CreateCategory::route('/create'),
             'edit' => EditCategory::route('/{record}/edit'),
         ];
     }
