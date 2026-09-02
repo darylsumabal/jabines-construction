@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'ref_code',
     'date_used',
     'project_id',
-    'material_id',
+    'inventory_id',
     'total_cost',
     'quantity_used',
     'remarks',
@@ -22,8 +22,13 @@ class MaterialUsage extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function material(): BelongsTo
+    // public function material(): BelongsTo
+    // {
+    //     return $this->belongsTo(Material::class);
+    // }
+
+    public function inventory(): BelongsTo
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(Inventory::class);
     }
 }

@@ -24,19 +24,19 @@ class SuppliersTable
                 TextColumn::make('address')
                     ->searchable()
                     ->limit(50),
+                TextColumn::make('contact_person')
+                    ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('email')
+                    ->searchable(),
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

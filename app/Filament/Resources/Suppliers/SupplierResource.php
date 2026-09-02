@@ -20,12 +20,24 @@ use UnitEnum;
 class SupplierResource extends Resource
 {
     protected static ?string $model = Supplier::class;
-    protected static string | UnitEnum | null $navigationGroup = 'Inventory';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTruck;
 
     public static function form(Schema $schema): Schema
     {
         return SupplierForm::configure($schema);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
     }
 
     public static function table(Table $table): Table

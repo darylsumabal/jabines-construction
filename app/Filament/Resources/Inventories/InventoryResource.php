@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Inventories;
 use App\Filament\Resources\Inventories\Pages\CreateInventory;
 use App\Filament\Resources\Inventories\Pages\EditInventory;
 use App\Filament\Resources\Inventories\Pages\ListInventories;
+use App\Filament\Resources\Inventories\RelationManagers\InventoryHistoryRelationManager;
 use App\Filament\Resources\Inventories\Schemas\InventoryForm;
 use App\Filament\Resources\Inventories\Tables\InventoriesTable;
 use App\Models\Inventory;
@@ -19,14 +20,23 @@ class InventoryResource extends Resource
 {
     protected static ?string $model = Inventory::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArchiveBox;
-
 
     public static function form(Schema $schema): Schema
     {
         return InventoryForm::configure($schema);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
     }
 
     public static function table(Table $table): Table
@@ -37,7 +47,7 @@ class InventoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            InventoryHistoryRelationManager::class,
         ];
     }
 

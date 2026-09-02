@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

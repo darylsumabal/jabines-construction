@@ -44,4 +44,9 @@ class Project extends Model
     {
         return $this->hasMany(MaterialUsage::class);
     }
+
+    public function inventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class);
+    }
 }
