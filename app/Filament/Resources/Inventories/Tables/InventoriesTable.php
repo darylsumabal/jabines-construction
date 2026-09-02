@@ -34,12 +34,9 @@ class InventoriesTable
                     ->label('Beg Stock'),
                 TextColumn::make('purchased_quantity')
                     ->label('Purchased'),
-                TextColumn::make('used_quantity')
-                    ->label('Used'),
-                TextColumn::make('ending_stock')
-                    ->label('Ending'),
+                TextColumn::make('used_quantity'),
+                TextColumn::make('ending_stock'),
                 TextColumn::make('inventory_value')
-                    ->label('Value')
                     ->money('PHP'),
                 TextColumn::make('stock_status')
                     ->badge()

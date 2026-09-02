@@ -32,10 +32,10 @@ class Inventory extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function materialUsage(): BelongsTo
-    {
-        return $this->belongsTo(MaterialUsage::class);
-    }
+    // public function materialUsages(): HasMany
+    // {
+    //     return $this->hasMany(MaterialUsage::class);
+    // }
 
     public function project(): BelongsTo
     {

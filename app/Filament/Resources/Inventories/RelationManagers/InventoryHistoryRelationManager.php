@@ -29,12 +29,18 @@ class InventoryHistoryRelationManager extends RelationManager
                         fn ($state, $record) => "{$record->material->ref_code} - {$state}"
                     )
                     ->searchable(),
+                TextColumn::make('material.unit_cost')
+                    ->searchable()
+                    ->prefix('₱'),
                 TextColumn::make('quantity')
                     ->searchable(),
-                TextColumn::make('total')
-                    ->searchable(),
+
                 TextColumn::make('total_amount')
-                    ->searchable(),
+                    ->searchable()
+                    ->prefix('₱'),
+                TextColumn::make('total')
+                    ->searchable()
+                    ->prefix('₱'),
                 TextColumn::make('date_purchased')
                     ->label('Date')
                     ->date(),

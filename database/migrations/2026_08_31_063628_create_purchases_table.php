@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Category;
-use App\Models\Inventory;
 use App\Models\Material;
 use App\Models\Project;
 use App\Models\Supplier;
