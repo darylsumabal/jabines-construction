@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'collected',
     'balance',
     'status',
+    'date',
 )]
 class AccountsReceivable extends Model
 {

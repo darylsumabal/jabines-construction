@@ -14,15 +14,16 @@ return new class extends Migration
     {
         Schema::create('billings', function (Blueprint $table) {
             $table->id();
-            $table->string('reference_no');
             $table->foreignIdFor(Project::class);
-            $table->string('billing_type');
-            $table->decimal('billing_amount', 15, 2);
+            $table->string('ref_no');
+            $table->string('type');
+            $table->decimal('amount', 15, 2);
             $table->decimal('vat', 15, 2);
-            $table->decimal('total_billing', 15, 2);
+            $table->decimal('total', 15, 2);
             $table->decimal('amount_collected', 15, 2);
             $table->decimal('balance', 15, 2);
             $table->string('status');
+            $table->date('date');
             $table->timestamps();
         });
     }

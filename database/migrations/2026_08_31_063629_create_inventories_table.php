@@ -17,11 +17,11 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('ref_no');
             $table->foreignIdFor(Material::class);
             $table->foreignIdFor(Category::class);
             $table->foreignIdFor(Purchase::class);
             $table->foreignIdFor(Project::class);
+            $table->string('ref_no');
             $table->integer('beg_stock');
             $table->integer('purchased_quantity');
             $table->integer('used_quantity');

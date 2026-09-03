@@ -20,27 +20,20 @@ class ProjectsTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('project_name')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('client')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('budget')
-                    ->money('PHP')
-                    ->sortable(),
+                    ->money('PHP'),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'in_progress' => 'info',
                         'completed' => 'success',
                         'on_hold' => 'gray',
                         'cancelled' => 'danger',
                     }),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('status')

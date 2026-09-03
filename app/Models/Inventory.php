@@ -42,10 +42,11 @@ class Inventory extends Model
         return $this->belongsTo(Project::class);
     }
 
-    // public function purchases(): HasMany
-    // {
-    //     return $this->hasMany(Purchase::class);
-    // }
+    public function purchase(): BelongsTo
+    {
+        return $this->belongsTo(Purchase::class);
+    }
+
     public function inventoryHistory(): HasMany
     {
         return $this->hasMany(InventoryHistory::class);

@@ -2,7 +2,8 @@
 
 namespace App\Filament\Resources\Projects\RelationManagers;
 
-use Filament\Actions\AssociateAction;
+use App\Models\Revenue;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -10,11 +11,17 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use PtPlugins\FilamentNumberInput\Fields\NumberInput;
 
 class RevenueRelationManager extends RelationManager
 {
@@ -24,26 +31,80 @@ class RevenueRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextInput::make('reference_no')
-                    ->required()
-                    ->maxLength(255),
+                Grid::make(3)->schema([
+                    TextInput::make('ref_no')
+                        ->label('Ref No')
+                        ->required()
+                        ->suffixAction(
+                            Action::make('generateRefCode')
+                                ->icon('heroicon-m-arrow-path')
+                                ->action(function (Set $set) {
+                                    $lastRevenue = Revenue::orderBy('id', 'desc')->first();
+
+                                    if ($lastRevenue && preg_match('/^REV-(\d+)$/', $lastRevenue->ref_no, $matches)) {
+                                        $nextNumber = intval($matches[1]) + 1;
+                                    } else {
+                                        $nextNumber = 1;
+                                    }
+
+                                    $set('ref_no', 'REV-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                })
+                        )
+                        ->maxLength(255),
+                    DatePicker::make('date')
+                        ->native(false)
+                        ->required(),
+                    Select::make('billing_type')
+                        ->label('Billing Type')
+                        ->options([
+                            'down_payment_billing' => 'Down Payment Billing',
+                            'progress_billing' => 'Progress Billing',
+                            'final_billing' => 'Final Billing',
+                            'retention_billing' => 'Retention Billing',
+                        ])
+                        ->required(),
+                ])->columnSpanFull(),
+                NumberInput::make('amount')
+                    ->label('Revenue Amount')
+                    ->american()
+                    ->prefix('₱')
+                    ->required(),
+                Select::make('remarks')
+                    ->label('Remarks')
+                    ->options([
+                        'in_progress' => 'In Progress',
+                        'completed' => 'Completed',
+                        'on_hold' => 'On Hold',
+                        'cancelled' => 'Cancelled',
+                    ])
+                    ->required(),
+
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('reference_no')
+            ->recordTitleAttribute('ref_no')
             ->columns([
-                TextColumn::make('reference_no')
+                TextColumn::make('ref_no')
+                    ->label('Ref No')
                     ->searchable(),
+                TextColumn::make('billing_type')
+                    ->searchable(),
+                TextColumn::make('amount')
+                    ->label('Revenue Amount')
+                    ->numeric()
+                    ->money('PHP'),
+                TextColumn::make('remarks'),
+                TextColumn::make('date'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
-                AssociateAction::make(),
+                CreateAction::make()
+                ->modalWidth(Width::FiveExtraLarge),
             ])
             ->recordActions([
                 EditAction::make(),

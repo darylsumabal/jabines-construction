@@ -31,16 +31,16 @@ class InventoryHistoryRelationManager extends RelationManager
                     ->searchable(),
                 TextColumn::make('material.unit_cost')
                     ->searchable()
-                    ->prefix('₱'),
+                    ->money('PHP'),
                 TextColumn::make('quantity')
                     ->searchable(),
 
                 TextColumn::make('total_amount')
                     ->searchable()
-                    ->prefix('₱'),
+                    ->money('PHP'),
                 TextColumn::make('total')
                     ->searchable()
-                    ->prefix('₱'),
+                    ->money('PHP'),
                 TextColumn::make('date_purchased')
                     ->label('Date')
                     ->date(),

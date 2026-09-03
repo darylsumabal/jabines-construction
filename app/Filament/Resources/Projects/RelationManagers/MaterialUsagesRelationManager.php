@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Projects\RelationManagers;
 
 use App\Models\Inventory;
+use App\Models\InventoryHistory;
 use App\Models\MaterialUsage;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -18,6 +19,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use PtPlugins\FilamentNumberInput\Fields\NumberInput;
@@ -111,6 +113,7 @@ class MaterialUsagesRelationManager extends RelationManager
 
                 NumberInput::make('total_cost')->readOnly()
                     ->prefix('₱')->american(),
+
                 TextInput::make('remarks')
                     ->required()
                     ->maxLength(255)->columnSpanFull(),
@@ -128,19 +131,14 @@ class MaterialUsagesRelationManager extends RelationManager
                     ->label('Material Name')
                     ->searchable(),
                 TextColumn::make('inventory.material.unit')
-                    ->label('Unit')
-                    ->searchable(),
+                    ->label('Unit'),
                 TextColumn::make('inventory.material.unit_cost')
                     ->label('Unit Cost')
-                    ->money('PHP')
-                    ->searchable(),
-                TextColumn::make('quantity_used')
-                    ->searchable(),
+                    ->money('PHP'),
+                TextColumn::make('quantity_used'),
                 TextColumn::make('total_cost')
-                    ->money('PHP')
-                    ->searchable(),
-                TextColumn::make('remarks')
-                    ->searchable(),
+                    ->money('PHP'),
+                TextColumn::make('remarks'),
             ])
             ->filters([
                 //
@@ -152,16 +150,71 @@ class MaterialUsagesRelationManager extends RelationManager
                         $inventoryId = $data['inventory_id'];
                         $inventory = Inventory::where('id', $inventoryId)->first();
 
+                        $totalUsed = $inventory->used_quantity + $quantityUsed;
+
+                        $endingStock = $inventory->purchased_quantity - $totalUsed;
+
+                        $unitCost = $inventory->material->unit_cost ?? 0;
+
                         $inventory->update([
-                            'used_quantity' => $quantityUsed,
-                            'ending_stock' => $inventory->ending_stock - $quantityUsed,
+                            'used_quantity' => $totalUsed,
+                            'ending_stock' => $endingStock,
+                            'inventory_value' => $endingStock * $unitCost,
+                        ]);
+
+                        if ($endingStock <= 0) {
+                            $inventory->update(['stock_status' => 'out_of_stock']);
+                        } elseif ($endingStock <= 5) {
+                            $inventory->update(['stock_status' => 'low_stock']);
+                        }
+
+                        InventoryHistory::create([
+                            'purchase_id' => $inventory->purchase_id,
+                            'inventory_id' => $inventory->id,
+                            'project_id' => $data['project_id'],
+                            'supplier_id' => $inventory->purchase->supplier_id,
+                            'material_id' => $inventory->material_id,
+                            'category_id' => $inventory->category_id,
+                            'quantity' => $data['quantity_used'],
+                            'total_amount' => $unitCost * $data['quantity_used'],
+                            'total' => $unitCost * ($unitCost * $data['quantity_used']),
+                            'date_purchased' => $data['date_used'],
+                            'type' => 'material_usage',
                         ]);
 
                         return $data;
-                    }),
+                    })
+                    ->modalWidth(Width::FiveExtraLarge),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->mutateDataUsing(function (array $data): array {
+                        $quantityUsed = $data['quantity_used'];
+                        $inventoryId = $data['inventory_id'];
+                        $inventory = Inventory::where('id', $inventoryId)->first();
+
+                        $previousUsage = MaterialUsage::where('inventory_id', $inventoryId)
+                            ->where('id', '!=', $data['id'] ?? 0)
+                            ->sum('quantity_used');
+
+                        $totalUsed = $previousUsage + $quantityUsed;
+                        $endingStock = $inventory->purchased_quantity - $totalUsed;
+                        $unitCost = $inventory->material->unit_cost ?? 0;
+
+                        $inventory->update([
+                            'used_quantity' => $totalUsed,
+                            'ending_stock' => $endingStock,
+                            'inventory_value' => $endingStock * $unitCost,
+                        ]);
+
+                        if ($endingStock <= 0) {
+                            $inventory->update(['stock_status' => 'out_of_stock']);
+                        } elseif ($endingStock <= 5) {
+                            $inventory->update(['stock_status' => 'low_stock']);
+                        }
+
+                        return $data;
+                    }),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(
-    'reference_no',
+    'ref_no',
     'project_id',
-    'billing_type',
-    'billing_amount',
+    'type',
+    'amount',
     'vat',
-    'total_billing',
+    'total',
     'amount_collected',
     'balance',
     'status',
+    'date'
 )]
 class Billing extends Model
 {

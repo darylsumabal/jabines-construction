@@ -148,12 +148,14 @@ class InventoryForm
                             $unitCost = (float) ($get('material_unit_cost') ?? 0);
                             $quantity = (float) ($state ?? 0);
 
-                            $set('inventory_value', number_format($unitCost * $quantity, 2, '.', ''));
+                            $set('inventory_value', number_format($quantity * $unitCost, 2, '.', ''));
                         }),
                 ])->columnSpanFull(),
 
-                NumberInput::make('inventory_value')->readOnly()
-                    ->prefix('₱')->american(),
+                NumberInput::make('inventory_value')
+                    ->readOnly()
+                    ->prefix('₱')
+                    ->american(),
 
                 Select::make('stock_status')
                     ->options([
