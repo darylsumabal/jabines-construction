@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'quantity',
     'total_amount',
     'total',
-    'date_purchased',
-    'type',
     'payment_method'
 )]
 class Purchase extends Model

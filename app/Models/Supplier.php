@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'name',
     'address',
     'phone',
+    'contact_person',
+    'email',
 )]
 class Supplier extends Model
 {
