@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('billings', function (Blueprint $table) {
             $table->id();
-            $table->string('ref_no');
             $table->foreignIdFor(Project::class);
+            $table->string('ref_no');
             $table->string('type');
             $table->decimal('amount', 15, 2);
             $table->decimal('vat', 15, 2);

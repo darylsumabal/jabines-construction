@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cash_receipts', function (Blueprint $table) {
+        Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Project::class);
-            $table->string('ref_no');
-            $table->date('date');
-            $table->text('description')->nullable();
-            $table->decimal('cash_in', 15, 2);
+            $table->string('position');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cash_receipts');
+        Schema::dropIfExists('positions');
     }
 };
