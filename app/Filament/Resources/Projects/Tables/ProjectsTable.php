@@ -30,7 +30,7 @@ class ProjectsTable
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'in_progress' => 'info',
                         'completed' => 'success',

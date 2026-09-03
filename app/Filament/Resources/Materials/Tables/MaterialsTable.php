@@ -52,6 +52,6 @@ class MaterialsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->paginated([15, 25, 50, 100]);
     }
 }
