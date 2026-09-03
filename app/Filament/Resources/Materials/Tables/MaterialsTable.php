@@ -22,22 +22,14 @@ class MaterialsTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('category.name')
                     ->label('Category')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('unit')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('unit_cost')
                     ->money('PHP')
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
             ->headerActions([

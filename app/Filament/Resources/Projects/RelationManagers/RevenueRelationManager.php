@@ -103,7 +103,8 @@ class RevenueRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make()->modalWidth(Width::FiveExtraLarge),
+                CreateAction::make()
+                ->modalWidth(Width::FiveExtraLarge),
             ])
             ->recordActions([
                 EditAction::make(),

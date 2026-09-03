@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'project_id',
     'description',
     'cash_in',
+    'date'
 )]
 class CashReceipts extends Model
 {

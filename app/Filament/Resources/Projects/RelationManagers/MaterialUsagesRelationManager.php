@@ -19,6 +19,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use PtPlugins\FilamentNumberInput\Fields\NumberInput;
@@ -45,17 +46,17 @@ class MaterialUsagesRelationManager extends RelationManager
                                     $nextNumber = 1;
                                 }
 
-                                $set('ref_code', 'USE-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                $set('ref_code', 'USE-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                             })
                     )
                     ->maxLength(255),
                 DatePicker::make('date_used')->native(false)
                     ->required(),
                 Hidden::make('project_id')
-                    ->default(fn () => $this->getOwnerRecord()->id),
+                    ->default(fn() => $this->getOwnerRecord()->id),
                 Select::make('inventory_id')
-                    ->relationship('inventory', 'ref_code', fn ($query) => $query->where('project_id', $this->getOwnerRecord()->id))
-                    ->getOptionLabelFromRecordUsing(fn (Inventory $record) => "{$record->material->ref_code} {$record->material->name} ")
+                    ->relationship('inventory', 'ref_code', fn($query) => $query->where('project_id', $this->getOwnerRecord()->id))
+                    ->getOptionLabelFromRecordUsing(fn(Inventory $record) => "{$record->material->ref_code} {$record->material->name} ")
                     ->required()
                     ->searchable(['ref_code', 'name'])
                     ->preload()
@@ -130,19 +131,14 @@ class MaterialUsagesRelationManager extends RelationManager
                     ->label('Material Name')
                     ->searchable(),
                 TextColumn::make('inventory.material.unit')
-                    ->label('Unit')
-                    ->searchable(),
+                    ->label('Unit'),
                 TextColumn::make('inventory.material.unit_cost')
                     ->label('Unit Cost')
-                    ->money('PHP')
-                    ->searchable(),
-                TextColumn::make('quantity_used')
-                    ->searchable(),
+                    ->money('PHP'),
+                TextColumn::make('quantity_used'),
                 TextColumn::make('total_cost')
-                    ->money('PHP')
-                    ->searchable(),
-                TextColumn::make('remarks')
-                    ->searchable(),
+                    ->money('PHP'),
+                TextColumn::make('remarks'),
             ])
             ->filters([
                 //
@@ -187,7 +183,8 @@ class MaterialUsagesRelationManager extends RelationManager
                         ]);
 
                         return $data;
-                    }),
+                    })
+                    ->modalWidth(Width::FiveExtraLarge),
             ])
             ->recordActions([
                 EditAction::make()

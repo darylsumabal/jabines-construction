@@ -47,7 +47,7 @@ class BillingRelationManager extends RelationManager
                                         $nextNumber = 1;
                                     }
 
-                                    $set('ref_no', 'BIL-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                    $set('ref_no', 'BIL-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                                 })
                         )
                         ->maxLength(255),
@@ -153,7 +153,8 @@ class BillingRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make()->modalWidth(Width::FiveExtraLarge),
+                CreateAction::make()
+                    ->modalWidth(Width::FiveExtraLarge),
             ])
             ->recordActions([
                 EditAction::make(),
