@@ -180,6 +180,13 @@ class PurchaseForm
                         ->required()
                         ->readOnly()
                         ->prefix('₱')->american(),
+
+                    Select::make('payment_method')
+                        ->required()
+                        ->options([
+                            'cash' => 'Cash'
+                        ]),
+
                 ])->columnSpanFull(),
             ]);
     }

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(
-    'reference_no',
+    'ref_no',
     'project_id',
     'billing_type',
-    'revenue_amount',
+    'amount',
+    'date',
     'remarks',
 )]
 class Revenue extends Model

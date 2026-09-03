@@ -14,11 +14,12 @@ return new class extends Migration
     {
         Schema::create('revenues', function (Blueprint $table) {
             $table->id();
-            $table->string('reference_no');
+            $table->string('ref_no');
             $table->foreignIdFor(Project::class);
             $table->string('billing_type');
-            $table->decimal('revenue_amount');
+            $table->decimal('amount');
             $table->string('remarks');
+            $table->date('date');
             $table->timestamps();
         });
     }

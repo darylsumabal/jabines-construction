@@ -34,7 +34,7 @@ class InventoryForm
                                     $nextNumber = 1;
                                 }
 
-                                $set('ref_no', 'INV-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                $set('ref_no', 'INV-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                             })
                     )
                     ->maxLength(255),
@@ -43,7 +43,7 @@ class InventoryForm
                     ->relationship('project', 'project_name')
                     ->required()
                     ->getOptionLabelFromRecordUsing(
-                        fn (Project $record) => "{$record->project_code} {$record->client},  {$record->project_name}"
+                        fn(Project $record) => "{$record->project_code} {$record->client},  {$record->project_name}"
                     )
                     ->searchable()
                     ->live()
@@ -69,7 +69,7 @@ class InventoryForm
                     Select::make('material_id')
                         ->relationship('material', 'ref_code')
                         ->required()
-                        ->disabled(fn (Get $get) => ! $get('category_id'))
+                        ->disabled(fn(Get $get) => ! $get('category_id'))
                         ->searchable()
                         ->options(function (Get $get) {
                             $categoryId = $get('category_id');
@@ -80,7 +80,7 @@ class InventoryForm
 
                             return Material::where('category_id', $categoryId)
                                 ->get()
-                                ->mapWithKeys(fn (Material $material) => [
+                                ->mapWithKeys(fn(Material $material) => [
                                     $material->id => "{$material->ref_code} {$material->name}",
                                 ]);
                         })
@@ -148,7 +148,7 @@ class InventoryForm
                             $unitCost = (float) ($get('material_unit_cost') ?? 0);
                             $quantity = (float) ($state ?? 0);
 
-                            $set('inventory_value', number_format($unitCost * $quantity, 2, '.', ''));
+                            $set('inventory_value', number_format($quantity * $unitCost, 2, '.', ''));
                         }),
                 ])->columnSpanFull(),
 

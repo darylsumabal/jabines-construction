@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'client',
     'budget',
     'status',
+    'payment_method'
 )]
 class Project extends Model
 {
