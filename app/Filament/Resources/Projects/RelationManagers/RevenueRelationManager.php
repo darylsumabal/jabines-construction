@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Projects\RelationManagers;
 
 use App\Models\Revenue;
 use Filament\Actions\Action;
-use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -14,7 +13,6 @@ use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Grid;
@@ -49,7 +47,7 @@ class RevenueRelationManager extends RelationManager
                                         $nextNumber = 1;
                                     }
 
-                                    $set('ref_no', 'REV-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                    $set('ref_no', 'REV-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                                 })
                         )
                         ->maxLength(255),
@@ -63,8 +61,6 @@ class RevenueRelationManager extends RelationManager
                             'progress_billing' => 'Progress Billing',
                             'final_billing' => 'Final Billing',
                             'retention_billing' => 'Retention Billing',
-                            'change_order_billing' => 'Change Order Billing',
-                            'mobilization_billing' => 'Mobilization Billing',
                         ])
                         ->required(),
                 ])->columnSpanFull(),

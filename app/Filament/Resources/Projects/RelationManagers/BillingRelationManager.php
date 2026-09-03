@@ -19,6 +19,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use PtPlugins\FilamentNumberInput\Fields\NumberInput;
@@ -46,7 +47,7 @@ class BillingRelationManager extends RelationManager
                                         $nextNumber = 1;
                                     }
 
-                                    $set('ref_no', 'BIL-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                    $set('ref_no', 'BIL-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                                 })
                         )
                         ->maxLength(255),
@@ -137,6 +138,7 @@ class BillingRelationManager extends RelationManager
                     ->money('PHP'),
                 TextColumn::make('total')
                     ->label('Total Billing')
+                    ->summarize(Sum::make())
                     ->numeric()
                     ->money('PHP'),
                 TextColumn::make('amount_collected')

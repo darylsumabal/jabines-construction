@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Projects\RelationManagers;
 
 use App\Models\Inventory;
+use App\Models\InventoryHistory;
 use App\Models\MaterialUsage;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -44,17 +45,17 @@ class MaterialUsagesRelationManager extends RelationManager
                                     $nextNumber = 1;
                                 }
 
-                                $set('ref_code', 'USE-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                $set('ref_code', 'USE-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                             })
                     )
                     ->maxLength(255),
                 DatePicker::make('date_used')->native(false)
                     ->required(),
                 Hidden::make('project_id')
-                    ->default(fn() => $this->getOwnerRecord()->id),
+                    ->default(fn () => $this->getOwnerRecord()->id),
                 Select::make('inventory_id')
-                    ->relationship('inventory', 'ref_code', fn($query) => $query->where('project_id', $this->getOwnerRecord()->id))
-                    ->getOptionLabelFromRecordUsing(fn(Inventory $record) => "{$record->material->ref_code} {$record->material->name} ")
+                    ->relationship('inventory', 'ref_code', fn ($query) => $query->where('project_id', $this->getOwnerRecord()->id))
+                    ->getOptionLabelFromRecordUsing(fn (Inventory $record) => "{$record->material->ref_code} {$record->material->name} ")
                     ->required()
                     ->searchable(['ref_code', 'name'])
                     ->preload()
@@ -111,6 +112,7 @@ class MaterialUsagesRelationManager extends RelationManager
 
                 NumberInput::make('total_cost')->readOnly()
                     ->prefix('₱')->american(),
+
                 TextInput::make('remarks')
                     ->required()
                     ->maxLength(255)->columnSpanFull(),
@@ -152,16 +154,70 @@ class MaterialUsagesRelationManager extends RelationManager
                         $inventoryId = $data['inventory_id'];
                         $inventory = Inventory::where('id', $inventoryId)->first();
 
+                        $totalUsed = $inventory->used_quantity + $quantityUsed;
+
+                        $endingStock = $inventory->purchased_quantity - $totalUsed;
+
+                        $unitCost = $inventory->material->unit_cost ?? 0;
+
                         $inventory->update([
-                            'used_quantity' => $quantityUsed,
-                            'ending_stock' => $inventory->ending_stock - $quantityUsed,
+                            'used_quantity' => $totalUsed,
+                            'ending_stock' => $endingStock,
+                            'inventory_value' => $endingStock * $unitCost,
+                        ]);
+
+                        if ($endingStock <= 0) {
+                            $inventory->update(['stock_status' => 'out_of_stock']);
+                        } elseif ($endingStock <= 5) {
+                            $inventory->update(['stock_status' => 'low_stock']);
+                        }
+
+                        InventoryHistory::create([
+                            'purchase_id' => $inventory->purchase_id,
+                            'inventory_id' => $inventory->id,
+                            'project_id' => $data['project_id'],
+                            'supplier_id' => $inventory->purchase->supplier_id,
+                            'material_id' => $inventory->material_id,
+                            'category_id' => $inventory->category_id,
+                            'quantity' => $data['quantity_used'],
+                            'total_amount' => $unitCost * $data['quantity_used'],
+                            'total' => $unitCost * ($unitCost * $data['quantity_used']),
+                            'date_purchased' => $data['date_used'],
+                            'type' => 'material_usage',
                         ]);
 
                         return $data;
                     }),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->mutateDataUsing(function (array $data): array {
+                        $quantityUsed = $data['quantity_used'];
+                        $inventoryId = $data['inventory_id'];
+                        $inventory = Inventory::where('id', $inventoryId)->first();
+
+                        $previousUsage = MaterialUsage::where('inventory_id', $inventoryId)
+                            ->where('id', '!=', $data['id'] ?? 0)
+                            ->sum('quantity_used');
+
+                        $totalUsed = $previousUsage + $quantityUsed;
+                        $endingStock = $inventory->purchased_quantity - $totalUsed;
+                        $unitCost = $inventory->material->unit_cost ?? 0;
+
+                        $inventory->update([
+                            'used_quantity' => $totalUsed,
+                            'ending_stock' => $endingStock,
+                            'inventory_value' => $endingStock * $unitCost,
+                        ]);
+
+                        if ($endingStock <= 0) {
+                            $inventory->update(['stock_status' => 'out_of_stock']);
+                        } elseif ($endingStock <= 5) {
+                            $inventory->update(['stock_status' => 'low_stock']);
+                        }
+
+                        return $data;
+                    }),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

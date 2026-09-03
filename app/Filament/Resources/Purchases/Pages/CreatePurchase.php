@@ -31,10 +31,13 @@ class CreatePurchase extends CreateRecord
         }
 
         if ($existingInventory) {
+            $endingStock = $existingInventory->ending_stock + $data['quantity'];
+
             $existingInventory->update([
                 'purchased_quantity' => $existingInventory->purchased_quantity + $data['quantity'],
                 'inventory_value' => $existingInventory->inventory_value + $data['total_amount'],
-                'ending_stock' => $existingInventory->ending_stock + $data['quantity'],
+                'ending_stock' => $endingStock,
+                'stock_status' => $this->getStockStatus($endingStock),
             ]);
             $inventory = $existingInventory;
         } else {
@@ -49,7 +52,7 @@ class CreatePurchase extends CreateRecord
                 'used_quantity' => 0,
                 'ending_stock' => $data['quantity'],
                 'inventory_value' => $data['total_amount'],
-                'stock_status' => 'in_stock',
+                'stock_status' => $this->getStockStatus($data['quantity']),
                 'date_purchased' => $data['date_purchased'],
             ]);
         }
@@ -69,5 +72,18 @@ class CreatePurchase extends CreateRecord
         ]);
 
         return $purchase;
+    }
+
+    private function getStockStatus(float $endingStock): string
+    {
+        if ($endingStock <= 0) {
+            return 'out_of_stock';
+        }
+
+        if ($endingStock <= 5) {
+            return 'low_stock';
+        }
+
+        return 'in_stock';
     }
 }
