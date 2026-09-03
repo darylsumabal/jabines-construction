@@ -47,6 +47,7 @@ class SalaryForm
                     ->prefix('₱'),
                 DatePicker::make('month')
                     ->required()
+                    ->native(false)
                     ->displayFormat('F Y'),
             ]);
     }
