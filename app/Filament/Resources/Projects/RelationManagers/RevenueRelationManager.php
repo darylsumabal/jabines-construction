@@ -47,7 +47,7 @@ class RevenueRelationManager extends RelationManager
                                         $nextNumber = 1;
                                     }
 
-                                    $set('ref_no', 'REV-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                    $set('ref_no', 'REV-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                                 })
                         )
                         ->maxLength(255),
@@ -90,30 +90,28 @@ class RevenueRelationManager extends RelationManager
                 TextColumn::make('ref_no')
                     ->label('Ref No')
                     ->searchable(),
-                TextColumn::make('billing_type')
+                TextColumn::make('billing.type')
                     ->searchable(),
-                TextColumn::make('amount')
+                TextColumn::make('billing.amount')
                     ->label('Revenue Amount')
                     ->numeric()
                     ->money('PHP'),
-                TextColumn::make('remarks'),
-                TextColumn::make('date'),
+                TextColumn::make('project.status'),
+                TextColumn::make('billing.date'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
                 CreateAction::make()
-                ->modalWidth(Width::FiveExtraLarge),
+                    ->modalWidth(Width::FiveExtraLarge),
             ])
             ->recordActions([
                 EditAction::make(),
-                DissociateAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DissociateBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
             ]);

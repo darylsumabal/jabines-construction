@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Materials;
 
+use App\Filament\Resources\Inventories\InventoryResource;
 use App\Filament\Resources\Materials\Pages\CreateMaterial;
 use App\Filament\Resources\Materials\Pages\EditMaterial;
 use App\Filament\Resources\Materials\Pages\ListMaterials;
@@ -20,6 +21,7 @@ use UnitEnum;
 class MaterialResource extends Resource
 {
     protected static ?string $model = Material::class;
+    protected static ?string $navigationParentItem = InventoryResource::class;
 
     protected static string|UnitEnum|null $navigationGroup = 'Inventory';
 

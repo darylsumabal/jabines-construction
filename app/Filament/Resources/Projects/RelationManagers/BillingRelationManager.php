@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Projects\RelationManagers;
 
 use App\Models\Billing;
+use App\Models\Revenue;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -100,11 +101,23 @@ class BillingRelationManager extends RelationManager
                     ->american()
                     ->prefix('₱')
                     ->afterStateUpdated(function ($state, Set $set, Get $get) {
-                        $set('balance', (float) $get('total') - (float) $state);
+                        $total = (float) $get('total');
+                        $amountCollected = (float) $state;
+                        $balance = $total - $amountCollected;
+
+                        $set('balance', $balance);
+
+                        if (abs($balance - $total) < 0.01) {
+                            $set('status', 'unpaid');
+                        } elseif ($balance <= 0) {
+                            $set('status', 'paid');
+                        } else {
+                            $set('status', 'partial');
+                        }
                     }),
-                NumberInput::make('balance')
+                TextInput::make('balance')
                     ->label('Balance')
-                    ->american()
+                    ->numeric()
                     ->prefix('₱')
                     ->readOnly(),
                 Select::make('status')
@@ -154,7 +167,26 @@ class BillingRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->modalWidth(Width::FiveExtraLarge),
+                    ->modalWidth(Width::FiveExtraLarge)
+                    ->after(function ($record) {
+                        $projectId = $this->getOwnerRecord()->id;
+                        $billingId = $record->id;
+                        $lastRevenue = Revenue::orderBy('id', 'desc')->first();
+
+                        if ($lastRevenue && preg_match('/^REF-(\d+)$/', $lastRevenue->ref_no, $matches)) {
+                            $nextNumber = intval($matches[1]) + 1;
+                        } else {
+                            $nextNumber = 1;
+                        }
+
+
+
+                        Revenue::create([
+                            'ref_no' => 'REF-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT),
+                            'project_id' => $projectId,
+                            'billing_id' => $billingId,
+                        ]);
+                    })
             ])
             ->recordActions([
                 EditAction::make(),
