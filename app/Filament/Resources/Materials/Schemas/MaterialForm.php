@@ -17,8 +17,6 @@ class MaterialForm
         return $schema
             ->components([
                 Grid::make(3)->schema([
-
-
                     TextInput::make('ref_code')
                         ->required()
                         ->suffixAction(

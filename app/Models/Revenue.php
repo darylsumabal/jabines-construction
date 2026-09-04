@@ -9,15 +9,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(
     'ref_no',
     'project_id',
-    'billing_type',
-    'amount',
-    'date',
-    'remarks',
+    'billing_id'
 )]
 class Revenue extends Model
 {
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function billing(): BelongsTo
+    {
+        return $this->belongsTo(Billing::class);
     }
 }
