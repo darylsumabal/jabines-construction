@@ -9,7 +9,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Support\Enums\Width;
 use PtPlugins\FilamentNumberInput\Fields\NumberInput;
 
 class ProjectForm
