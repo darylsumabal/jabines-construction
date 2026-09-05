@@ -20,7 +20,7 @@ php artisan view:cache
 
 # Run migrations automatically on every container start
 php artisan migrate --force
-
+php artisan migrate db:seed
 echo "Startup optimizations complete. Handing off to Supervisor..."
 
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
