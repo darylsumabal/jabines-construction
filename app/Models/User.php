@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,14 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Option A: Allow ALL registered users to access the panel (simplest)
+        return true;
 
+        // Option B: Restrict access only to your specific email address
+        // return $this->email === 'your-email@example.com';
+    }
     /**
      * Get the attributes that should be cast.
      *
@@ -50,7 +58,7 @@ class User extends Authenticatable
         $initials = Str::initials($this->name, true);
 
         return Str::length($initials) > 1
-            ? Str::substr($initials, 0, 1).Str::substr($initials, -1)
+            ? Str::substr($initials, 0, 1) . Str::substr($initials, -1)
             : $initials;
     }
 }
