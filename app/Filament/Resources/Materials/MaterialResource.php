@@ -58,8 +58,8 @@ class MaterialResource extends Resource
     {
         return [
             'index' => ListMaterials::route('/'),
-            'create' => CreateMaterial::route('/create'),
-            'edit' => EditMaterial::route('/{record}/edit'),
+            // 'create' => CreateMaterial::route('/create'),
+            // 'edit' => EditMaterial::route('/{record}/edit'),
         ];
     }
 

@@ -48,7 +48,7 @@ class BillingRelationManager extends RelationManager
                                         $nextNumber = 1;
                                     }
 
-                                    $set('ref_no', 'BIL-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                    $set('ref_no', 'BIL-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                                 })
                         )
                         ->maxLength(255),
@@ -144,21 +144,35 @@ class BillingRelationManager extends RelationManager
                 TextColumn::make('amount')
                     ->label('Billing Amount')
                     ->numeric()
+                    ->summarize(Sum::make()
+                        ->money('PHP')
+                        ->hiddenLabel())
                     ->money('PHP'),
                 TextColumn::make('vat')
                     ->label('VAT (12%)')
                     ->numeric()
+                    ->summarize(Sum::make()
+                        ->money('PHP')
+                        ->hiddenLabel())
                     ->money('PHP'),
                 TextColumn::make('total')
                     ->label('Total Billing')
-                    ->summarize(Sum::make())
+                    ->summarize(Sum::make()
+                        ->money('PHP')
+                        ->hiddenLabel())
                     ->numeric()
                     ->money('PHP'),
                 TextColumn::make('amount_collected')
                     ->numeric()
+                    ->summarize(Sum::make()
+                        ->money('PHP')
+                        ->hiddenLabel())
                     ->money('PHP'),
                 TextColumn::make('balance')
                     ->numeric()
+                    ->summarize(Sum::make()
+                        ->money('PHP')
+                        ->hiddenLabel())
                     ->money('PHP'),
                 TextColumn::make('status'),
             ])
@@ -178,15 +192,12 @@ class BillingRelationManager extends RelationManager
                         } else {
                             $nextNumber = 1;
                         }
-
-
-
                         Revenue::create([
-                            'ref_no' => 'REF-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT),
+                            'ref_no' => 'REF-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT),
                             'project_id' => $projectId,
                             'billing_id' => $billingId,
                         ]);
-                    })
+                    }),
             ])
             ->recordActions([
                 EditAction::make(),

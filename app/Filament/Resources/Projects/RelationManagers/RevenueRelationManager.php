@@ -8,8 +8,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DissociateAction;
-use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -19,6 +17,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use PtPlugins\FilamentNumberInput\Fields\NumberInput;
@@ -47,7 +46,7 @@ class RevenueRelationManager extends RelationManager
                                         $nextNumber = 1;
                                     }
 
-                                    $set('ref_no', 'REV-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
+                                    $set('ref_no', 'REV-'.str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
                                 })
                         )
                         ->maxLength(255),
@@ -95,6 +94,9 @@ class RevenueRelationManager extends RelationManager
                 TextColumn::make('billing.amount')
                     ->label('Revenue Amount')
                     ->numeric()
+                    ->summarize(Sum::make()
+                        ->money('PHP')
+                        ->hiddenLabel())
                     ->money('PHP'),
                 TextColumn::make('project.status'),
                 TextColumn::make('billing.date'),
